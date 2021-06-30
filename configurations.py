@@ -23,10 +23,27 @@ BASELINE_FOLDER_NAME = 'baseline'
 ADDING_SYNTHETIC_FOLDER_NAME = 'adding_synthetic'
 
 # Default cross and within domain region pairs
-DEFAULT_REGION_PAIRS: List[List[str, str]] = [['EM', 'EM'], ['EM', 'NE'], ['EM', 'NW'], ['EM', 'SW'],
-                                              ['NE', 'EM'], ['NE', 'NE'], ['NE', 'NW'], ['NE', 'SW'],
-                                              ['NW', 'EM'], ['NW', 'NE'], ['NW', 'NW'], ['NW', 'SW'],
-                                              ['SW', 'EM'], ['SW', 'NE'], ['SW', 'NW'], ['SW', 'SW']]
+DEFAULT_REGION_PAIRS: List[List[str]] = [['EM', 'EM'], ['EM', 'NE'], ['EM', 'NW'], ['EM', 'SW'],
+                                         ['NE', 'EM'], ['NE', 'NE'], ['NE', 'NW'], ['NE', 'SW'],
+                                         ['NW', 'EM'], ['NW', 'NE'], ['NW', 'NW'], ['NW', 'SW'],
+                                         ['SW', 'EM'], ['SW', 'NE'], ['SW', 'NW'], ['SW', 'SW']]
 
 # Default amounts of real and synthetic images
-DEFAULT_RATIOS: List[List[int, int]] = [[100, 75]]
+DEFAULT_RATIOS: List[List[int]] = [[100, 75]]
+
+# Regions and their states
+REGION_NAMES = ['NE', 'EM', 'NW', 'SW']
+
+NE = ['Pennsylvania', 'New York', 'New Jersey', 'Delaware', 'Maryland',
+      'Connecticut', 'Massachusetts', 'Vermont', 'Maine', 'New Hampshire']
+EM = ['Minnesota', 'Iowa', 'Missouri', 'Michigan', 'Wisconsin', 'Illinois',
+      'Indiana', 'Ohio']
+NW = ['Washington', 'Idaho', 'Oregon', 'Montana', 'Wyoming']
+SW = ['New Mexico', 'Texas', 'California', 'Arizona', 'Utah', 'Nevada',
+      'Colorado']
+
+# states abbreviations per region
+NE_ab = ['PE', 'NY', 'NJ', 'DE', 'MD', 'CT', 'MA', 'VM', 'ME', 'NH']
+EM_ab = ['MN', 'IA', 'MO', 'MI', 'WI', 'IL', 'IN', 'OH']
+NW_ab = ['WA', 'ID', 'OR', 'MT', 'WY']
+SW_ab = ['NM', 'TX', 'CA', 'AZ', 'UT', 'NV', 'CO']
