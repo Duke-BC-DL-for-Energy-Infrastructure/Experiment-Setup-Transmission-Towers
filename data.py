@@ -8,7 +8,7 @@ def load_data() -> Dict[str, List[str]]:
     """
 
     :return:
-    Right now thinking it should return a dictionary in format {'region' : [list of images in region]}
+    Will return a dictionary in format {'region' : [list of images in region]}
     e.g. {'SW': [Arizona_id_302392_459, Arizona_id_306003_515, ...], 'NE': [Pennsylvania_id_129442_57, ...], ...}
     """
 
@@ -23,14 +23,29 @@ def load_data() -> Dict[str, List[str]]:
             image_basename = line.replace('\n', '')
             images_to_ignore.append(image_basename)
 
+    # Read train images
+    train_images = {region: [] for region in REGION_NAMES}
     with open(TRAIN_CSV_PATH, 'r') as csvfile:
         csvreader = csv.reader(csvfile)
-
         fields = csvreader.__next__()
-        print(fields)
+        for idx, row in enumerate(csvreader):
+            id, state, region = row[0], row[3], row[4]
+            image_basename = state + '_id_' + id + '_' + str(idx)
+            if image_basename not in images_to_ignore:
+                train_images[region].append(image_basename)
 
-        for row in csvreader:
-            break
+    # Read test images
+    test_images = {region: [] for region in REGION_NAMES}
+    with open(TEST_CSV_PATH, 'r') as csvfile:
+        csvreader = csv.reader(csvfile)
+        fields = csvreader.__next__()
+        for idx, row in enumerate(csvreader):
+            id, state, region = row[0], row[3], row[4]
+            image_basename = state + '_id_' + id + '_' + str(idx)
+            if image_basename not in images_to_ignore:
+                test_images[region].append(image_basename)
+
+    return train_images, test_images
 
 
 if __name__ == '__main__':
