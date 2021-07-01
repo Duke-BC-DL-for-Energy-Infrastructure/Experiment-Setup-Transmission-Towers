@@ -3,6 +3,7 @@ import glob
 import argparse
 from typing import List, Tuple
 from configurations import *
+from file_setup import create_data_and_names_files
 
 
 def main(args):

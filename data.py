@@ -13,7 +13,7 @@ def load_data() -> Dict[str, List[str]]:
     """
 
     assert os.path.isfile(TRAIN_CSV_PATH), f'TRAIN_CSV_PATH: {TRAIN_CSV_PATH} is not a valid file'
-    assert os.path.isfile(TEST_CSV_PATH), f'TEST_CSV_PATH: {TEST_CSV_PATH} is not a valid file'
+    assert os.path.isfile(VALIDATION_CSV_PATH), f'VALIDATION_CSV_PATH: {VALIDATION_CSV_PATH} is not a valid file'
     assert os.path.isfile(IMAGES_TO_IGNORE_PATH), f'IMAGES_TO_IGNORE_PATH: {IMAGES_TO_IGNORE_PATH} is not a valid file'
 
     images_to_ignore = []
@@ -35,17 +35,17 @@ def load_data() -> Dict[str, List[str]]:
                 train_images[region].append(image_basename)
 
     # Read test images
-    test_images = {region: [] for region in REGION_NAMES}
-    with open(TEST_CSV_PATH, 'r') as csvfile:
+    validation_images = {region: [] for region in REGION_NAMES}
+    with open(VALIDATION_CSV_PATH, 'r') as csvfile:
         csvreader = csv.reader(csvfile)
         fields = csvreader.__next__()
         for idx, row in enumerate(csvreader):
             id, state, region = row[0], row[3], row[4]
             image_basename = state + '_id_' + id + '_' + str(idx)
             if image_basename not in images_to_ignore:
-                test_images[region].append(image_basename)
+                validation_images[region].append(image_basename)
 
-    return train_images, test_images
+    return train_images, validation_images
 
 
 if __name__ == '__main__':
