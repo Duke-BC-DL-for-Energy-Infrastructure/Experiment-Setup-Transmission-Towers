@@ -52,7 +52,7 @@ def main(args):
 
             # Create the folder for the current pair of regions
             output_folder = os.path.join(output_dir,
-                                         f'Train-{training_region}-Val-{validation_region}-{str(num_real)}-real-{str(num_syn)}-syn')
+                                         f'Train-{training_region}-Val-{validation_region}-{num_real}-real-{num_syn}-syn')
             if not os.path.exists(output_folder):
                 os.mkdir(output_folder)
 
