@@ -3,7 +3,7 @@ from typing import List
 
 # ----- PATHS -----
 # Paths to the train and test csv files
-TRAIN_CSV_PATH = os.path.join('data', 'train_sample.csv')
+TRAINING_CSV_PATH = os.path.join('data', 'train_sample.csv')
 VALIDATION_CSV_PATH = os.path.join('data', 'validation_sample.csv')
 
 # Path to images_to_ignore.txt
@@ -20,6 +20,7 @@ DEFAULT_REGION_PAIRS: List[List[str]] = [['EM', 'EM'], ['EM', 'NE'], ['EM', 'NW'
 # Default amounts of real and synthetic images for cross_domain_setup.py. First number is real images, which will be
 # used for both the training and validation set
 DEFAULT_RATIOS: List[List[int]] = [[100, 75]]
+DEFAULT_OUTPUT_DIR = 'output'
 
 # ----- REGIONS -----
 REGION_NAMES = ['NE', 'EM', 'NW', 'SW']

@@ -17,20 +17,42 @@ def main(args):
     training_images_per_region, validation_images_per_region = load_real_data()
     synthetic_images_per_region = load_synthetic_data()
 
-    # CREATE OUTPUTS:
     for ratio in ratios:
         for i in range(len(region_pairs)):
+
+            num_real, num_syn = ratio
             pair_names = region_pairs[i]
             training_region, validation_region = pair_names
-            train_images, validation_images = training_images_per_region[training_region].copy(), \
-                                              validation_images_per_region[validation_region].copy()
-            random.shuffle(train_images)
-            random.shuffle(validation_images)
+            print(f'----- Training {training_region}, Validating {validation_region}, '
+                  f'Num Real: {num_real} Num Syn: {num_syn} -----')
 
-            synthetic_images = synthetic_images_per_region[validation_region]
+            training_images, validation_images = training_images_per_region[training_region].copy(), \
+                                                 validation_images_per_region[validation_region].copy()
+
+            synthetic_images = synthetic_images_per_region[validation_region].copy()
+
+            random.shuffle(training_images)
+            random.shuffle(validation_images)
+            random.shuffle(synthetic_images)
+
+            # Compare num_real and num_syn input from the user with how many images we actually have and give a warning
+            # if we don't have enough
+            if num_real > len(training_images):
+                print(f'Warning: There are not enough images in region {training_region} for {num_real} number of '
+                      f'real training images. Will use {len(training_images)} real training images instead. '
+                      f'Consider changing the ratios argument to a smaller value')
+            if num_real > len(validation_images):
+                print(f'Warning: There are not enough images in region {validation_region} for {num_real} number of '
+                      f'real validation images. Will use {len(validation_images)} validation images instead. '
+                      f'Consider changing the ratios argument to a smaller value')
+            if num_syn > len(synthetic_images):
+                print(f'Warning: There are not enough synthetic images in region {training_region} for {num_syn} number '
+                      f'of synthetic training images. Will use {len(synthetic_images)} synthetic training images instead. '
+                      f'Consider changing the ratios argument to a smaller value')
 
             # Create the folder for the current pair of regions
-            output_folder = os.path.join(output_dir, f'Train-{pair_names[0]}-Val-{pair_names[1]}-{str(ratio[0])}-real-{str(ratio[1])}-syn')
+            output_folder = os.path.join(output_dir,
+                                         f'Train-{training_region}-Val-{validation_region}-{str(num_real)}-real-{str(num_syn)}-syn')
             if not os.path.exists(output_folder):
                 os.mkdir(output_folder)
 
@@ -47,17 +69,19 @@ def main(args):
             create_data_and_names_files(baseline_folder=baseline_folder,
                                         adding_synthetic_folder=adding_synthetic_folder)
 
+            # Create .txt files for image and label paths for baseline and adding synthetic
             create_training_and_validation_files(baseline_folder=baseline_folder,
                                                  adding_synthetic_folder=adding_synthetic_folder,
-                                                 train_images=train_images,
+                                                 training_images=training_images,
                                                  validation_images=validation_images,
                                                  synthetic_images=synthetic_images,
-                                                 ratio=ratio)
+                                                 num_real=num_real,
+                                                 num_syn=num_syn)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-o', '--output-dir', type=str, default='output',
+    parser.add_argument('-o', '--output-dir', type=str, default=DEFAULT_OUTPUT_DIR,
                         help='Path to directory where files/directories will be generated')
     parser.add_argument('-r', '--ratios', type=List[List[int]], default=DEFAULT_RATIOS,
                         help='Nested list with number of real images followed by number of synthetic images. See '

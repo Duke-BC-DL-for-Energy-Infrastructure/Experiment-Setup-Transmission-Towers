@@ -3,15 +3,13 @@ from configurations import *
 from typing import List
 
 
-def create_training_and_validation_files(baseline_folder: str, adding_synthetic_folder: str, train_images: List,
-                                         validation_images: List, synthetic_images: List, ratio: List):
-    num_real = ratio[0]
-    num_syn = ratio[1]
+def create_training_and_validation_files(baseline_folder: str, adding_synthetic_folder: str, training_images: List,
+                                         validation_images: List, synthetic_images: List, num_real: int, num_syn: int):
 
     # Create paths for baseline training set
     baseline_training_imgs = open(os.path.join(baseline_folder, TRAIN_IMG_FNAME), 'w')
     baseline_training_lbls = open(os.path.join(baseline_folder, TRAIN_LBL_FNAME), 'w')
-    for img in train_images[:num_real]:
+    for img in training_images[:num_real]:
         baseline_training_imgs.write(REAL_IMG_DIR + img + IMAGE_EXTENSION + '\n')
         baseline_training_lbls.write(REAL_LBL_DIR + img + LABEL_EXTENSION + '\n')
     baseline_training_imgs.close()
@@ -27,7 +25,8 @@ def create_training_and_validation_files(baseline_folder: str, adding_synthetic_
     baseline_validation_lbls.close()
 
     if len(synthetic_images) == 0:
-        print('No synthetic images provided, so will not generate adding_synthetic image and label files')
+        print(f'No synthetic images provided, so will not generate adding_synthetic '
+              f'image and label files in {adding_synthetic_folder}')
         return
 
     # Create paths for adding synthetic training set
@@ -36,15 +35,15 @@ def create_training_and_validation_files(baseline_folder: str, adding_synthetic_
     for syn_img in synthetic_images[:num_syn]:
         adding_synthetic_training_imgs.write(SYN_IMG_DIR + syn_img + IMAGE_EXTENSION + '\n')
         adding_synthetic_training_lbls.write(SYN_LBL_DIR + syn_img + LABEL_EXTENSION + '\n')
-    for img in train_images[:num_real]:
+    for img in training_images[:num_real]:
         adding_synthetic_training_imgs.write(REAL_IMG_DIR + img + IMAGE_EXTENSION + '\n')
         adding_synthetic_training_lbls.write(REAL_LBL_DIR + img + LABEL_EXTENSION + '\n')
     adding_synthetic_training_imgs.close()
     adding_synthetic_training_lbls.close()
 
     # Create paths for adding synthetic validation set
-    adding_synthetic_validation_imgs = open(os.path.join(adding_synthetic_folder, TRAIN_IMG_FNAME), 'w')
-    adding_synthetic_validation_lbls = open(os.path.join(adding_synthetic_folder, TRAIN_LBL_FNAME), 'w')
+    adding_synthetic_validation_imgs = open(os.path.join(adding_synthetic_folder, VALID_IMG_FNAME), 'w')
+    adding_synthetic_validation_lbls = open(os.path.join(adding_synthetic_folder, VALID_LBL_FNAME), 'w')
     for img in validation_images[:num_real]:
         adding_synthetic_validation_imgs.write(REAL_IMG_DIR + img + TRAIN_IMG_FNAME + '\n')
         adding_synthetic_validation_lbls.write(REAL_LBL_DIR + img + LABEL_EXTENSION + '\n')
