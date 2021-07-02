@@ -75,7 +75,8 @@ def main(args):
                                                  training_images=training_images,
                                                  validation_images=validation_images,
                                                  synthetic_images=synthetic_images,
-                                                 num_real=num_real,
+                                                 num_real_training=num_real,
+                                                 num_real_validation=num_real,
                                                  num_syn=num_syn)
 
 
