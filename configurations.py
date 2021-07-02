@@ -60,3 +60,5 @@ LABEL_EXTENSION = '.txt'
 # ----- OUTPUT DIR PATHS -----
 REAL_IMG_DIR = '../data/images/'
 REAL_LBL_DIR = '../data/labels/'
+SYN_IMG_DIR = '../data/synthetic_images/'
+SYN_LBL_DIR = '../data/synthetic_labels/'

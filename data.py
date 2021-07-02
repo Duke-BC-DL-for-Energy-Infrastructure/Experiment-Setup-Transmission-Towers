@@ -4,9 +4,8 @@ from typing import Dict, List
 import csv
 
 
-def load_data() -> Dict[str, List[str]]:
+def load_real_data() -> Dict[str, List[str]]:
     """
-
     :return:
     Will return a dictionary in format {'region' : [list of images in region]}
     e.g. {'SW': [Arizona_id_302392_459, Arizona_id_306003_515, ...], 'NE': [Pennsylvania_id_129442_57, ...], ...}
@@ -48,5 +47,10 @@ def load_data() -> Dict[str, List[str]]:
     return train_images, validation_images
 
 
+def load_synthetic_data():
+    return {region: [] for region in REGION_NAMES}
+
+
 if __name__ == '__main__':
-    load_data()
+    print(load_real_data())
+    print(load_synthetic_data())
