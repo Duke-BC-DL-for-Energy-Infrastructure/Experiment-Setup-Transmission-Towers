@@ -18,7 +18,7 @@ DEFAULT_REGION_PAIRS: List[List[str]] = [['EM', 'EM'], ['EM', 'NE'], ['EM', 'NW'
                                          ['SW', 'EM'], ['SW', 'NE'], ['SW', 'NW'], ['SW', 'SW']]
 
 # Default amounts of real and synthetic images for cross_domain_setup.py. First number is real images, which will be
-# used for both the training and validation set
+# used for both the training and validation set. Can use 'ALL' to use all images available
 DEFAULT_RATIOS: List[List[int]] = [[100, 75]]
 DEFAULT_OUTPUT_DIR = 'output'
 

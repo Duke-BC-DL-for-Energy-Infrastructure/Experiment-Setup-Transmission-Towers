@@ -4,6 +4,7 @@ from configurations import *
 from data import load_real_data, load_synthetic_data
 from file_setup import create_data_and_names_files, create_training_and_validation_files
 import random
+from check_inputs import check_num_images
 
 
 def main(args):
@@ -19,40 +20,35 @@ def main(args):
 
     for ratio in ratios:
         for i in range(len(region_pairs)):
-
             num_real, num_syn = ratio
+            num_real_training = num_real
+            num_real_validation = num_real
             pair_names = region_pairs[i]
             training_region, validation_region = pair_names
-            print(f'----- Training {training_region}, Validating {validation_region}, '
-                  f'Num Real: {num_real} Num Syn: {num_syn} -----')
 
-            training_images, validation_images = training_images_per_region[training_region].copy(), \
-                                                 validation_images_per_region[validation_region].copy()
+            print(f'----- Training: {training_region} {num_real_training}, '
+                  f'Validating: {validation_region} {num_real_validation}, Num Syn: {num_syn} -----')
 
+            training_images = training_images_per_region[training_region].copy()
+            validation_images = validation_images_per_region[validation_region].copy()
             synthetic_images = synthetic_images_per_region[validation_region].copy()
 
             random.shuffle(training_images)
             random.shuffle(validation_images)
             random.shuffle(synthetic_images)
 
-            # Compare num_real and num_syn input from the user with how many images we actually have and give a warning
-            # if we don't have enough
-            if num_real > len(training_images):
-                print(f'Warning: There are not enough images in region {training_region} for {num_real} number of '
-                      f'real training images. Will use {len(training_images)} real training images instead. '
-                      f'Consider changing the ratios argument to a smaller value')
-            if num_real > len(validation_images):
-                print(f'Warning: There are not enough images in region {validation_region} for {num_real} number of '
-                      f'real validation images. Will use {len(validation_images)} validation images instead. '
-                      f'Consider changing the ratios argument to a smaller value')
-            if num_syn > len(synthetic_images):
-                print(f'Warning: There are not enough synthetic images in region {training_region} for {num_syn} number '
-                      f'of synthetic training images. Will use {len(synthetic_images)} synthetic training images instead. '
-                      f'Consider changing the ratios argument to a smaller value')
+            num_real_training, num_real_validation, num_syn = check_num_images(training_images=training_images,
+                                                                               validation_images=validation_images,
+                                                                               synthetic_images=synthetic_images,
+                                                                               num_real_training=num_real_training,
+                                                                               num_real_validation=num_real_validation,
+                                                                               num_syn=num_syn,
+                                                                               training_region=training_region,
+                                                                               validation_region=validation_region)
 
             # Create the folder for the current pair of regions
-            output_folder = os.path.join(output_dir,
-                                         f'Train-{training_region}-Val-{validation_region}-{num_real}-real-{num_syn}-syn')
+            output_folder = os.path.join(output_dir, f'Train-{training_region}-{num_real_training}-'
+                                                     f'Val-{validation_region}-{num_real_validation}-Syn-{num_syn}')
             if not os.path.exists(output_folder):
                 os.mkdir(output_folder)
 
@@ -75,8 +71,8 @@ def main(args):
                                                  training_images=training_images,
                                                  validation_images=validation_images,
                                                  synthetic_images=synthetic_images,
-                                                 num_real_training=num_real,
-                                                 num_real_validation=num_real,
+                                                 num_real_training=num_real_training,
+                                                 num_real_validation=num_real_validation,
                                                  num_syn=num_syn)
 
 
