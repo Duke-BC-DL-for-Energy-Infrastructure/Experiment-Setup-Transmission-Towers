@@ -54,8 +54,13 @@ def main(args):
         os.mkdir(baseline_folder)
 
     adding_synthetic_folder = os.path.join(output_folder, ADDING_SYNTHETIC_FOLDER_NAME)
-    if not os.path.exists(adding_synthetic_folder):
-        os.mkdir(adding_synthetic_folder)
+    if num_syn > 0:
+        if not os.path.exists(adding_synthetic_folder):
+            os.mkdir(adding_synthetic_folder)
+    else:
+        print(f'No synthetic images provided, so will not generate adding_synthetic files '
+              f'at {adding_synthetic_folder}')
+        adding_synthetic_folder = None
 
     create_data_and_names_files(baseline_folder=baseline_folder,
                                 adding_synthetic_folder=adding_synthetic_folder)
