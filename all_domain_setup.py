@@ -42,8 +42,9 @@ def main(args):
                                                                        training_region=training_region,
                                                                        validation_region=validation_region)
 
-    output_folder = os.path.join(output_dir, f'Train-{training_region}-{num_real_training}-'
-                                             f'Val-{validation_region}-{num_real_validation}-Syn-{num_syn}')
+    experiment_dir = f'Train-{training_region}-{num_real_training}-' \
+                        f'Val-{validation_region}-{num_real_validation}-Syn-{num_syn}'
+    output_folder = os.path.join(output_dir, experiment_dir)
     print(f'Output Folder: {output_folder}')
     if not os.path.exists(output_folder):
         os.mkdir(output_folder)
@@ -58,11 +59,12 @@ def main(args):
         if not os.path.exists(adding_synthetic_folder):
             os.mkdir(adding_synthetic_folder)
     else:
-        print(f'No synthetic images provided, so will not generate adding_synthetic files '
-              f'at {adding_synthetic_folder}')
+        print(f'No synthetic images provided, so will not generate adding_synthetic files at {adding_synthetic_folder}')
         adding_synthetic_folder = None
 
-    create_data_and_names_files(baseline_folder=baseline_folder,
+    create_data_and_names_files(output_dir=output_dir,
+                                experiment_dir=experiment_dir,
+                                baseline_folder=baseline_folder,
                                 adding_synthetic_folder=adding_synthetic_folder)
 
     create_training_and_validation_files(baseline_folder=baseline_folder,

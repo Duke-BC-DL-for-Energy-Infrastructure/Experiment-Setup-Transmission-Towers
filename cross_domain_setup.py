@@ -47,8 +47,9 @@ def main(args):
                                                                                validation_region=validation_region)
 
             # Create the folder for the current pair of regions
-            output_folder = os.path.join(output_dir, f'Train-{training_region}-{num_real_training}-'
-                                                     f'Val-{validation_region}-{num_real_validation}-Syn-{num_syn}')
+            experiment_dir = f'Train-{training_region}-{num_real_training}-' \
+                                f'Val-{validation_region}-{num_real_validation}-Syn-{num_syn}'
+            output_folder = os.path.join(output_dir, experiment_dir)
             print(f'Output Folder: {output_folder}')
             if not os.path.exists(output_folder):
                 os.mkdir(output_folder)
@@ -68,7 +69,9 @@ def main(args):
                 adding_synthetic_folder = None
 
             # Create .data and .names files
-            create_data_and_names_files(baseline_folder=baseline_folder,
+            create_data_and_names_files(output_dir=output_dir,
+                                        experiment_dir=experiment_dir,
+                                        baseline_folder=baseline_folder,
                                         adding_synthetic_folder=adding_synthetic_folder)
 
             # Create .txt files for image and label paths for baseline and adding synthetic

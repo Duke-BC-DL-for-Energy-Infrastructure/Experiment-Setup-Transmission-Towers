@@ -51,19 +51,19 @@ def create_training_and_validation_files(baseline_folder: str, adding_synthetic_
         adding_synthetic_validation_lbls.close()
 
 
-def create_data_and_names_files(baseline_folder: str, adding_synthetic_folder: str):
+def create_data_and_names_files(output_dir: str, experiment_dir: str, baseline_folder: str, adding_synthetic_folder: str):
     assert os.path.isdir(baseline_folder), f'{baseline_folder} is not a directory'
 
     # Create .data file for baseline folder
     with open(os.path.join(baseline_folder, BASELINE_DATA_FNAME), 'w') as baseline_data:
-        baseline_data.write(f'train={BASELINE_FOLDER_NAME}/{TRAIN_IMG_FNAME}\n')
-        baseline_data.write(f'train_label={BASELINE_FOLDER_NAME}/{TRAIN_LBL_FNAME}\n')
+        baseline_data.write(f'train={output_dir}/{experiment_dir}/{BASELINE_FOLDER_NAME}/{TRAIN_IMG_FNAME}\n')
+        baseline_data.write(f'train_label={output_dir}/{experiment_dir}/{BASELINE_FOLDER_NAME}/{TRAIN_LBL_FNAME}\n')
         baseline_data.write('classes=1\n')
-        baseline_data.write(f'valid={BASELINE_FOLDER_NAME}/{VALID_IMG_FNAME}\n')
-        baseline_data.write(f'valid_label={BASELINE_FOLDER_NAME}/{VALID_LBL_FNAME}\n')
-        baseline_data.write(f'names={BASELINE_FOLDER_NAME}/{NAMES_FNAME}\n')
+        baseline_data.write(f'valid={output_dir}/{experiment_dir}/{BASELINE_FOLDER_NAME}/{VALID_IMG_FNAME}\n')
+        baseline_data.write(f'valid_label={output_dir}/{experiment_dir}/{BASELINE_FOLDER_NAME}/{VALID_LBL_FNAME}\n')
+        baseline_data.write(f'names={output_dir}/{experiment_dir}/{BASELINE_FOLDER_NAME}/{NAMES_FNAME}\n')
         baseline_data.write('backup=backup/\n')
-        baseline_data.write('eval=wnd')
+        baseline_data.write('eval=ttx')
 
     # Create .names file for baseline folder
     with open(os.path.join(baseline_folder, NAMES_FNAME), 'w') as baseline_names:
@@ -74,14 +74,14 @@ def create_data_and_names_files(baseline_folder: str, adding_synthetic_folder: s
 
         # Create .data file for adding synthetic folder
         with open(os.path.join(adding_synthetic_folder, ADDING_SYNTHETIC_DATA_FNAME), 'w') as adding_synthetic_data:
-            adding_synthetic_data.write(f'train={ADDING_SYNTHETIC_FOLDER_NAME}/{TRAIN_IMG_FNAME}\n')
-            adding_synthetic_data.write(f'train_label={ADDING_SYNTHETIC_FOLDER_NAME}/{TRAIN_LBL_FNAME}\n')
+            adding_synthetic_data.write(f'train={output_dir}/{experiment_dir}/{ADDING_SYNTHETIC_FOLDER_NAME}/{TRAIN_IMG_FNAME}\n')
+            adding_synthetic_data.write(f'train_label={output_dir}/{experiment_dir}/{ADDING_SYNTHETIC_FOLDER_NAME}/{TRAIN_LBL_FNAME}\n')
             adding_synthetic_data.write('classes=1\n')
-            adding_synthetic_data.write(f'valid={ADDING_SYNTHETIC_FOLDER_NAME}/{VALID_IMG_FNAME}\n')
-            adding_synthetic_data.write(f'valid_label={ADDING_SYNTHETIC_FOLDER_NAME}/{VALID_LBL_FNAME}\n')
-            adding_synthetic_data.write(f'names={ADDING_SYNTHETIC_FOLDER_NAME}/{NAMES_FNAME}\n')
+            adding_synthetic_data.write(f'valid={output_dir}/{experiment_dir}/{ADDING_SYNTHETIC_FOLDER_NAME}/{VALID_IMG_FNAME}\n')
+            adding_synthetic_data.write(f'valid_label={output_dir}/{experiment_dir}/{ADDING_SYNTHETIC_FOLDER_NAME}/{VALID_LBL_FNAME}\n')
+            adding_synthetic_data.write(f'names={output_dir}/{experiment_dir}/{ADDING_SYNTHETIC_FOLDER_NAME}/{NAMES_FNAME}\n')
             adding_synthetic_data.write('backup=backup/\n')
-            adding_synthetic_data.write('eval=wnd')
+            adding_synthetic_data.write('eval=ttx')
 
         # Create .names file for adding synthetic folder
         with open(os.path.join(adding_synthetic_folder, NAMES_FNAME), 'w') as adding_synthetic_names:
