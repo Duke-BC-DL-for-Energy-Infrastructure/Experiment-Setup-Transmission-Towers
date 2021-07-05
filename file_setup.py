@@ -6,6 +6,7 @@ from typing import List
 def create_training_and_validation_files(baseline_folder: str, adding_synthetic_folder: str, training_images: List,
                                          validation_images: List, synthetic_images: List, num_real_training: int,
                                          num_real_validation: int, num_syn: int):
+    assert os.path.isdir(baseline_folder), f'{baseline_folder} is not a directory'
 
     # Create paths for baseline training set
     baseline_training_imgs = open(os.path.join(baseline_folder, TRAIN_IMG_FNAME), 'w')
@@ -26,6 +27,8 @@ def create_training_and_validation_files(baseline_folder: str, adding_synthetic_
     baseline_validation_lbls.close()
 
     if adding_synthetic_folder:
+        assert os.path.isdir(adding_synthetic_folder), f'{adding_synthetic_folder} is not a directory'
+
         # Create paths for adding synthetic training set
         adding_synthetic_training_imgs = open(os.path.join(adding_synthetic_folder, TRAIN_IMG_FNAME), 'w')
         adding_synthetic_training_lbls = open(os.path.join(adding_synthetic_folder, TRAIN_LBL_FNAME), 'w')
