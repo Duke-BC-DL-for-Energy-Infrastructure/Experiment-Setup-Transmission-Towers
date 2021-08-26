@@ -48,7 +48,30 @@ def load_real_data() -> Dict[str, List[str]]:
     return training_images, validation_images
 
 
-def load_synthetic_data(syn_dir) -> Dict[str, List[str]]:
+def load_synthetic_data() -> Dict[str, List[str]]:
+    """
+    :return:
+    Will return a dictionary in format {'region' : [list of synthetic images in region]}
+    e.g. {'SW': [Arizona_id_302392_459, Arizona_id_306003_515, ...], 'NE': [Pennsylvania_id_129442_57, ...], ...}
+    """
+
+    synthetic_data = {region: [] for region in REGION_NAMES}
+    if not os.path.exists(SYNTHETIC_CSV_PATH):
+        print(f'Did not find csv file at {SYNTHETIC_CSV_PATH}, given by SYNTHETIC_CSV_PATH in configurations.py. '
+              f'Will return empty dictionary for synthetic images')
+        return synthetic_data
+
+    with open(SYNTHETIC_CSV_PATH, 'r') as csvfile:
+        csvreader = csv.reader(csvfile)
+        fields = csvreader.__next__()
+        for idx, row in enumerate(csvreader):
+            region = row[0]
+            filename = row[1]
+            synthetic_data[region].append(filename)
+    return synthetic_data
+
+
+def collect_syn_data(syn_dir):
     """
     :param syn_dir: path to the directory where the synthetic data is stored. Assumes that the directory is organized
     such that there is a folder named with the region name. Following is an example of a directory structure where
@@ -66,28 +89,27 @@ def load_synthetic_data(syn_dir) -> Dict[str, List[str]]:
     Here, color_all_images_step608 is specified in configurations.py and is the name of the directory that CityEngine
     creates for the images that it generates
 
-    :return:
-    Will return a dictionary in format {'region' : [list of synthetic images in region]}
-    e.g. {'SW': [Arizona_id_302392_459, Arizona_id_306003_515, ...], 'NE': [Pennsylvania_id_129442_57, ...], ...}
+    Creates a csv file with the same name as SYNTHETIC_CSV_PATH, where there is a field for region and for filename.
+    This file is then used by load_synthetic_data
     """
-    synthetic_data = {}
-    for region in REGION_NAMES:
-        region_dir_path = os.path.join(syn_dir, region, CITYENGINE_IMAGE_DIRECTORY_NAME)
-        if os.path.exists(region_dir_path):
-            print(f'Found directory for {region}')
-            paths = glob.glob(os.path.join(region_dir_path, f'*{SYN_IMAGE_EXTENSION}'))
-            filenames = []
-            for path in paths:
-                basename = os.path.basename(path)
-                filename = os.path.splitext(basename)[0]
-                filenames.append(filename)
-            synthetic_data[region] = filenames
-        else:
-            pass
-
-    return synthetic_data
+    with open(SYNTHETIC_CSV_PATH, 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(["region", "filename"])
+        for region in REGION_NAMES:
+            region_dir_path = os.path.join(syn_dir, region, CITYENGINE_IMAGE_DIRECTORY_NAME)
+            if os.path.exists(region_dir_path):
+                print(f'Found directory for {region}')
+                paths = glob.glob(os.path.join(region_dir_path, f'*{SYN_IMAGE_EXTENSION}'))
+                for path in paths:
+                    basename = os.path.basename(path)
+                    filename = os.path.splitext(basename)[0]
+                    writer.writerow([region, filename])
+            else:
+                pass
+    return
 
 
 if __name__ == '__main__':
     print(load_real_data())
-    print(load_synthetic_data(SYN_DIR))
+    print(load_synthetic_data())
+    #collect_syn_data(SYN_DIR)

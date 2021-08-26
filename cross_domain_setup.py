@@ -16,7 +16,7 @@ def main(args):
         os.mkdir(output_dir)
 
     training_images_per_region, validation_images_per_region = load_real_data()
-    synthetic_images_per_region = load_synthetic_data(SYN_DIR)
+    synthetic_images_per_region = load_synthetic_data()
 
     for ratio in ratios:
         for i in range(len(region_pairs)):

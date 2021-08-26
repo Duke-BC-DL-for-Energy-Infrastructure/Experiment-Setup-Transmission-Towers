@@ -45,7 +45,7 @@ def create_training_and_validation_files(baseline_folder: str, adding_synthetic_
         adding_synthetic_validation_imgs = open(os.path.join(adding_synthetic_folder, VALID_IMG_FNAME), 'w')
         adding_synthetic_validation_lbls = open(os.path.join(adding_synthetic_folder, VALID_LBL_FNAME), 'w')
         for img in validation_images[:num_real_validation]:
-            adding_synthetic_validation_imgs.write(REAL_IMG_DIR + img + TRAIN_IMG_FNAME + '\n')
+            adding_synthetic_validation_imgs.write(REAL_IMG_DIR + img + IMAGE_EXTENSION + '\n')
             adding_synthetic_validation_lbls.write(REAL_LBL_DIR + img + LABEL_EXTENSION + '\n')
         adding_synthetic_validation_imgs.close()
         adding_synthetic_validation_lbls.close()
