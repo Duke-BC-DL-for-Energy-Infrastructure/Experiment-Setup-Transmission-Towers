@@ -2,6 +2,7 @@ import os
 from configurations import *
 from typing import Dict, List
 import csv
+import glob
 
 
 def load_real_data() -> Dict[str, List[str]]:
@@ -47,10 +48,46 @@ def load_real_data() -> Dict[str, List[str]]:
     return training_images, validation_images
 
 
-def load_synthetic_data():
-    return {region: [] for region in REGION_NAMES}
+def load_synthetic_data(syn_dir) -> Dict[str, List[str]]:
+    """
+    :param syn_dir: path to the directory where the synthetic data is stored. Assumes that the directory is organized
+    such that there is a folder named with the region name. Following is an example of a directory structure where
+    we have all four regions.
+
+    - > syn_dir
+        - > EM
+            - > color_all_images_step608
+                - > image1.png
+                - > image2.png
+        - > NE
+        - > NW
+        - > SW
+
+    Here, color_all_images_step608 is specified in configurations.py and is the name of the directory that CityEngine
+    creates for the images that it generates
+
+    :return:
+    Will return a dictionary in format {'region' : [list of synthetic images in region]}
+    e.g. {'SW': [Arizona_id_302392_459, Arizona_id_306003_515, ...], 'NE': [Pennsylvania_id_129442_57, ...], ...}
+    """
+    synthetic_data = {}
+    for region in REGION_NAMES:
+        region_dir_path = os.path.join(syn_dir, region, CITYENGINE_IMAGE_DIRECTORY_NAME)
+        if os.path.exists(region_dir_path):
+            print(f'Found directory for {region}')
+            paths = glob.glob(os.path.join(region_dir_path, f'*{SYN_IMAGE_EXTENSION}'))
+            filenames = []
+            for path in paths:
+                basename = os.path.basename(path)
+                filename = os.path.splitext(basename)[0]
+                filenames.append(filename)
+            synthetic_data[region] = filenames
+        else:
+            pass
+
+    return synthetic_data
 
 
 if __name__ == '__main__':
     print(load_real_data())
-    print(load_synthetic_data())
+    print(load_synthetic_data(SYN_DIR))

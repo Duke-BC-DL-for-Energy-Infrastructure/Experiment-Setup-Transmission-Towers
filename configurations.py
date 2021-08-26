@@ -9,6 +9,9 @@ VALIDATION_CSV_PATH = os.path.join('data', 'validation_sample.csv')
 # Path to images_to_ignore.txt
 IMAGES_TO_IGNORE_PATH = os.path.join('data', 'images_to_ignore.txt')
 
+# Path to directory that contains the synthetic images
+SYN_DIR = r'C:\Users\tyler\Documents\CityEngine\Default Workspace\TransmissionTowerSynthetic\images'
+
 # ----- DEFAULTS -----
 # Default cross and within domain region pairs for cross_domain_setup.py. First region is training and second is
 # validation
@@ -57,6 +60,12 @@ NAMES_FNAME = 'ttx.names'
 
 IMAGE_EXTENSION = '.jpg'
 LABEL_EXTENSION = '.txt'
+
+# Image extension of synthetic images
+SYN_IMAGE_EXTENSION = '.png'
+
+# Path of the directory that CityEngine generates
+CITYENGINE_IMAGE_DIRECTORY_NAME = 'color_all_images_step608'
 
 # ----- OUTPUT DIR PATHS -----
 REAL_IMG_DIR = '../data/images/'
